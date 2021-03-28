@@ -12,4 +12,4 @@ const connection = mongoose.connection;
 
 connection.once('open', function () {
     console.log("Mongodb database connection established successfully.");
-})
+});

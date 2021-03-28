@@ -5,12 +5,13 @@ const asyncHandler = require('express-async-handler');
 const validateAdminMiddleware = require('../commons/middlewares/validate-admin.middleware');
 
 router
-    .patch('/unlock-user/:id/', validateAdminMiddleware, asyncHandler(async (req, res) => {
+    .use(validateAdminMiddleware)
+    .patch('/unlock-user/:id/', asyncHandler(async (req, res) => {
         const { id } = req.params;
         await adminService.unlock(id);
         res.json({ message: 'User has successfully been unlocked!' });
     }))
-    .patch('/lock-user/:id/', validateAdminMiddleware, asyncHandler(async (req, res) => {
+    .patch('/lock-user/:id/', asyncHandler(async (req, res) => {
         const { id } = req.params;
         await adminService.lock(id);
         res.json({ message: 'User has successfully been locked!' });
