@@ -1,12 +1,25 @@
+const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
 const { NotFound } = require('http-errors');
 const User = require('./user.entity');
 const Post = require('../posts/post.entity');
-const mongoose = require('mongoose');
 
 class UserService {
-    create(payload) {
-        const user = new User(payload);
-        return user.save();
+    async create(payload) {
+        const { username, password, firstName, lastName, role } = payload;
+       
+        const user = {
+            _id: new mongoose.Types.ObjectId(),
+            username,
+            password,
+            firstName,
+            lastName,
+            role,
+        };
+
+        const createdUser = { ...(await User.create(user))._doc };
+        createdUser.password = undefined;
+        return createdUser;
     }
 
     findAll(query) {
